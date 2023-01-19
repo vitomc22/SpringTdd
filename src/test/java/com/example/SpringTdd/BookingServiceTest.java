@@ -20,39 +20,38 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 public class BookingServiceTest {
-    @Before
-    public void setup(){ //metodo mock para nao usar banco
-        LocalDate checkIn = LocalDate.parse("2022-11-10");
-        LocalDate checkOut = LocalDate.parse("2022-11-20");
-        BookingModel bookingModel = new BookingModel("1","Victor",checkIn,checkOut,1);
-
-        Mockito.when(bookingRepository.findByReserveName(bookingModel.getReserveName())) //quando necessario usar o repository o mock é acionado com metodo do repository
-                .thenReturn(Optional.of(bookingModel));
-    }
-
-    @TestConfiguration //Only test Bean
-    static class BookinfServiceTestConfiguration{  //injection point bean
-        @Bean
-        public BookingService bookingService(){
-            return new BookingService();
-        }
-
-    }
-
     @Autowired
     BookingService bookingservice;
     @MockBean
     BookingRepository bookingRepository;
 
+    @Before
+    public void setup() { //metodo mock para nao usar banco
+        LocalDate checkIn = LocalDate.parse("2022-11-10");
+        LocalDate checkOut = LocalDate.parse("2022-11-20");
+        BookingModel bookingModel = new BookingModel("Victor", checkIn, checkOut, "1");
+
+        Mockito.when(bookingRepository.findByReserveName(bookingModel.getReserveName())) //quando necessario usar o repository o mock é acionado com metodo do repository
+                .thenReturn(Optional.of(bookingModel));
+    }
+
     @Test
-    public void bookingTesteServiceDaysCalculator(){
+    public void bookingTesteServiceDaysCalculator() {
         String name = "Victor";
         int days = bookingservice.daysCalculatorWithDatabase(name);
 
-        Assertions.assertEquals(days,10);
+        Assertions.assertEquals(10, days);
 
     }
 
+    @TestConfiguration //Only test Bean
+    static class BookingServiceTestConfiguration {  //injection point bean
+        @Bean
+        public BookingService bookingService() {
+            return new BookingService();
+        }
+
+    }
 
 
 }

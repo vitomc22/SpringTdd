@@ -1,21 +1,35 @@
 package com.example.SpringTdd.model;
 
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+
 import java.time.LocalDate;
 
+@Entity
 public class BookingModel {
 
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
+    @Column
     private String reserveName;
+    @Column
     private LocalDate checkIn;
+    @Column
     private LocalDate checkOut;
-    private int numberGuests;
+    @Column
+    private String numberGuests;
 
-    public BookingModel(String id, String reserveName, LocalDate checkIn, LocalDate checkOut, int numberGuests) {
-        this.id = id;
+    public BookingModel() {
+    }
+
+    public BookingModel(String reserveName, LocalDate checkIn, LocalDate checkOut, String numberGuests) {
         this.reserveName = reserveName;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.numberGuests = numberGuests;
+
     }
 
     public String getId() {
@@ -50,11 +64,11 @@ public class BookingModel {
         this.checkOut = checkOut;
     }
 
-    public int getNumberGuests() {
+    public String getNumberGuests() {
         return numberGuests;
     }
 
-    public void setNumberGuests(int numberGuests) {
+    public void setNumberGuests(String numberGuests) {
         this.numberGuests = numberGuests;
     }
 }
